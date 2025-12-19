@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ঢাকা এমআরটি</string>
+
+    <!-- Balance -->
+    <string name="balance_default">৳ ০</string>
+    <string name="balance_value">ব্যালেন্স: ৳ %1$d</string>
+
+    <!-- Status -->
+    <string name="status_tap_card">আপনার এমআরটি কার্ড ট্যাপ করুন</string>
+    <string name="nfc_not_supported">এই ফোনে NFC সমর্থিত নয়</string>
+
+    <string name="low_balance_warning">⚠ ব্যালেন্স কম! অনুগ্রহ করে রিচার্জ করুন</string>
+    <string name="balance_ok">ব্যালেন্স যথেষ্ট আছে</string>
+</resources>

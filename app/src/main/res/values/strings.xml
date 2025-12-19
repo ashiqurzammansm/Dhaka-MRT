@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Dhaka MRT</string>
+
+    <!-- Balance -->
+    <string name="balance_default">৳ 0</string>
+    <string name="balance_value">Balance: ৳ %1$d</string>
+
+    <!-- Status -->
+    <string name="status_tap_card">Tap your MRT card</string>
+    <string name="nfc_not_supported">NFC not supported on this phone</string>
+
+    <string name="low_balance_warning">⚠ Low Balance! Please recharge</string>
+    <string name="balance_ok">Balance is sufficient</string>
+</resources>
