@@ -12,8 +12,9 @@ import com.example.dhakamrt.databinding.ActivityMainBinding
 import com.example.dhakamrt.ui.viewmodel.CardViewModel
 
 /**
- * Main screen
- * Shows balance and low balance warning
+ * MainActivity
+ * Home screen of Dhaka MRT app
+ * Handles NFC card tap and navigation
  */
 class MainActivity : AppCompatActivity() {
 
@@ -28,30 +29,45 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.balanceText.text = getString(R.string.balance_default)
-        binding.statusText.text = getString(R.string.status_tap_card)
-
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
-        if (nfcAdapter == null) {
-            binding.statusText.text = getString(R.string.nfc_not_supported)
+        // Navigate to Fare Calculator
+        binding.fareBtn.setOnClickListener {
+            startActivity(Intent(this, FareCalculatorActivity::class.java))
         }
 
-        // Observe Room database
+        // Observe card data from Room
         cardViewModel.cardData.observe(this) { card ->
             if (card != null) {
 
                 binding.balanceText.text =
                     getString(R.string.balance_value, card.balance)
 
-                if (cardViewModel.isLowBalance(card.balance)) {
-                    binding.statusText.text =
+                binding.statusText.text =
+                    if (cardViewModel.isLowBalance(card.balance))
                         getString(R.string.low_balance_warning)
-                } else {
-                    binding.statusText.text =
+                    else
                         getString(R.string.balance_ok)
-                }
             }
+        }
+    }
+
+    /**
+     * VERY IMPORTANT:
+     * Signature must be Intent (NOT Intent?)
+     */
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+
+        val tag: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+
+        if (tag != null) {
+            val uid = tag.id.joinToString("") { byte ->
+                String.format("%02X", byte)
+            }
+
+            cardViewModel.saveCard(uid)
+            cardViewModel.readCard(uid)
         }
     }
 
@@ -62,28 +78,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        disableNfcForegroundDispatch()
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-        val tag: Tag? = intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG)
-
-        if (tag != null) {
-
-            val uid = tag.id.joinToString("") {
-                String.format("%02X", it)
-            }
-
-            cardViewModel.saveCard(uid)
-            cardViewModel.readCard(uid)
-        }
+        nfcAdapter?.disableForegroundDispatch(this)
     }
 
     private fun enableNfcForegroundDispatch() {
-        val intent = Intent(this, javaClass)
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val intent = Intent(this, javaClass).apply {
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
 
         val pendingIntent = PendingIntent.getActivity(
             this,
@@ -92,7 +93,9 @@ class MainActivity : AppCompatActivity() {
             PendingIntent.FLAG_MUTABLE
         )
 
-        val filters = arrayOf(IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED))
+        val filters = arrayOf(
+            IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
+        )
 
         nfcAdapter?.enableForegroundDispatch(
             this,
@@ -101,5 +104,4 @@ class MainActivity : AppCompatActivity() {
             null
         )
     }
-
-    private fun disableNfcForegroundDispatch() {
+}

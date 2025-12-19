@@ -1,58 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <!-- App Title -->
     <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dhaka MRT"
+        android:text="@string/app_name"
         android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Balance Label -->
-    <TextView
-        android:id="@+id/balanceLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current Balance"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/titleText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"/>
+        android:layout_height="wrap_content"/>
 
-    <!-- Balance Value -->
     <TextView
         android:id="@+id/balanceText"
+        android:text="@string/balance_default"
+        android:textSize="22sp"
+        android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="৳ 0"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/balanceLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_height="wrap_content"/>
 
-    <!-- Status Text -->
     <TextView
         android:id="@+id/statusText"
+        android:text="@string/status_tap_card"
+        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Waiting for NFC card"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/balanceText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"/>
+        android:layout_height="wrap_content"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/fareBtn"
+        android:text="@string/open_fare_calculator"
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

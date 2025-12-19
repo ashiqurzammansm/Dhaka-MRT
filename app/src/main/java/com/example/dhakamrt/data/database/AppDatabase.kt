@@ -5,22 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.dhakamrt.data.dao.CardDao
+import com.example.dhakamrt.data.dao.StationDao
 import com.example.dhakamrt.data.entity.CardEntity
+import com.example.dhakamrt.data.entity.StationEntity
 
-/**
- * Main database of the app
- */
 @Database(
-    entities = [CardEntity::class],
-    version = 1,
+    entities = [CardEntity::class, StationEntity::class],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cardDao(): CardDao
+    abstract fun stationDao(): StationDao
 
     companion object {
-
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
@@ -30,7 +29,8 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "dhaka_mrt_db"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                    .build()
 
                 INSTANCE = instance
                 instance
