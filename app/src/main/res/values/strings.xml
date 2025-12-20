@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">Dhaka MRT</string>
-    <string name="balance_default">৳ 0</string>
-    <string name="balance_value">Balance: ৳ %1$d</string>
-    <string name="status_tap_card">Tap your MRT card</string>
-    <string name="balance_ok">Balance is sufficient</string>
-    <string name="low_balance_warning">⚠ Low Balance! Please recharge</string>
-    <string name="fare_result">Fare: ৳ %1$d</string>
+
+    <!-- Navigation -->
     <string name="open_fare_calculator">Open Fare Calculator</string>
+
+    <!-- NFC OFF -->
+    <string name="nfc_disabled_title">NFC disabled</string>
+    <string name="nfc_disabled_message">
+        Please enable NFC in your device settings to read your MRT Pass
+    </string>
+
+    <!-- NFC ON -->
+    <string name="tap_card_title">Tap Your Card</string>
+    <string name="tap_card_message">
+        Hold your card behind your phone to read the balance
+    </string>
+
+    <!-- Accessibility -->
+    <string name="nfc_icon_desc">NFC status icon</string>
+
+    <!-- Balance -->
+    <string name="balance_value">Balance: ৳ %1$d</string>
 </resources>

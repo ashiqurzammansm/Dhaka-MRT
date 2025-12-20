@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">ঢাকা এমআরটি</string>
-    <string name="balance_default">৳ ০</string>
-    <string name="balance_value">ব্যালেন্স: ৳ %1$d</string>
-    <string name="status_tap_card">আপনার এমআরটি কার্ড ট্যাপ করুন</string>
-    <string name="balance_ok">ব্যালেন্স যথেষ্ট আছে</string>
-    <string name="low_balance_warning">⚠ ব্যালেন্স কম! রিচার্জ করুন</string>
-    <string name="fare_result">ভাড়া: ৳ %1$d</string>
+
+    <!-- Navigation -->
     <string name="open_fare_calculator">ভাড়া ক্যালকুলেটর খুলুন</string>
+
+    <!-- NFC OFF -->
+    <string name="nfc_disabled_title">NFC বন্ধ আছে</string>
+    <string name="nfc_disabled_message">
+        এমআরটি কার্ড পড়তে ডিভাইস সেটিংসে NFC চালু করুন
+    </string>
+
+    <!-- NFC ON -->
+    <string name="tap_card_title">কার্ড ট্যাপ করুন</string>
+    <string name="tap_card_message">
+        ব্যালেন্স পড়তে ফোনের পেছনে কার্ড ধরুন
+    </string>
+
+    <!-- Accessibility -->
+    <string name="nfc_icon_desc">NFC স্ট্যাটাস আইকন</string>
+
+    <!-- Balance -->
+    <string name="balance_value">ব্যালেন্স: ৳ %1$d</string>
 </resources>

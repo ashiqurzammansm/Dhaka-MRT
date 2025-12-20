@@ -1,27 +1,18 @@
 package com.example.dhakamrt
 
-import android.app.PendingIntent
 import android.content.Intent
-import android.content.IntentFilter
-import android.nfc.NfcAdapter
-import android.nfc.Tag
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.dhakamrt.databinding.ActivityMainBinding
-import com.example.dhakamrt.ui.viewmodel.CardViewModel
+import com.example.dhakamrt.ui.fare.FareFragment
+import com.example.dhakamrt.ui.history.HistoryFragment
+import com.example.dhakamrt.ui.home.HomeFragment
+import com.example.dhakamrt.ui.more.MoreFragment
 
-/**
- * MainActivity
- * Home screen of Dhaka MRT app
- * Handles NFC card tap and navigation
- */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var nfcAdapter: NfcAdapter? = null
-
-    private val cardViewModel: CardViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,79 +20,38 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        // Default screen = Home
+        loadFragment(HomeFragment())
 
-        // Navigate to Fare Calculator
-        binding.fareBtn.setOnClickListener {
-            startActivity(Intent(this, FareCalculatorActivity::class.java))
-        }
-
-        // Observe card data from Room
-        cardViewModel.cardData.observe(this) { card ->
-            if (card != null) {
-
-                binding.balanceText.text =
-                    getString(R.string.balance_value, card.balance)
-
-                binding.statusText.text =
-                    if (cardViewModel.isLowBalance(card.balance))
-                        getString(R.string.low_balance_warning)
-                    else
-                        getString(R.string.balance_ok)
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_fare -> loadFragment(FareFragment())
+                R.id.menu_balance -> loadFragment(HomeFragment())
+                R.id.menu_history -> loadFragment(HistoryFragment())
+                R.id.menu_more -> loadFragment(MoreFragment())
             }
+            true
         }
     }
 
     /**
-     * VERY IMPORTANT:
-     * Signature must be Intent (NOT Intent?)
+     * This method receives NFC intents
+     * and forwards them to HomeFragment
      */
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        val tag: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+        val currentFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 
-        if (tag != null) {
-            val uid = tag.id.joinToString("") { byte ->
-                String.format("%02X", byte)
-            }
-
-            cardViewModel.saveCard(uid)
-            cardViewModel.readCard(uid)
+        if (currentFragment is HomeFragment) {
+            currentFragment.onNfcIntent(intent)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        enableNfcForegroundDispatch()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        nfcAdapter?.disableForegroundDispatch(this)
-    }
-
-    private fun enableNfcForegroundDispatch() {
-        val intent = Intent(this, javaClass).apply {
-            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        }
-
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            intent,
-            PendingIntent.FLAG_MUTABLE
-        )
-
-        val filters = arrayOf(
-            IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
-        )
-
-        nfcAdapter?.enableForegroundDispatch(
-            this,
-            pendingIntent,
-            filters,
-            null
-        )
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
     }
 }
